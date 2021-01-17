@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Permanent+Marker&display=swap');
+
+
+body{
+    background: #0000AE;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+header , footer{
+    background:#FFBC00 ;
+    position: relative;
+    height: 150px;
+    grid-column: 1/-1;
+}
+main{
+    grid-column: 2/-1;
+}
+header img{
+    position: absolute;
+    top: 50%;
+    transform:translateY(-50%);
+    height: 100px;
+    width: 200px;
+
+}
+header h1 {
+    position: absolute;
+    top: 50%;
+    left: 160px;
+    transform:translateY(-50%);
+    font-family: 'Permanent Marker', cursive;
+    font-size: 40px;
+    color: #0000AE ;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: white;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+img {
+    width: 300px;
+    height: 300px; 
+    padding-right: 10px;
+    border-radius: 50px;
+    filter: drop-shadow(30px 10px 4px black);
+}
+#imagescontainer{
+    text-align: center;
+   
+}
+h2{
+    text-align: center;
+    color:#FFBC00 ;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 60px;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: black;
+}
+p{
+    text-align: center;
+    font-size: 40px;
+    font-family: 'Dancing Script', cursive;
+    color: #FFBC00 ;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: black;
+}
+form{
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    width: 400px;
+    height: 150px;
+}
+fieldset{
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+    width: 400px;
+    height: 120px;
+}
+#UserRounds{
+    height: 30px;
+    width: 300px;
+}
+#submit{
+    height: 30px;
+    width: 100px;
+}
+label , legend{
+    font-size: 20px;
+    color: #FFBC00;
+}
+#listcontainer{
+    grid-column: 1/2;
+    background: cornflowerblue;
+}
+li{
+    color: #FFBC00;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+button {
+
+    background-color:cornflowerblue ;
+    width: 120px;
+    height: 40px;
+    border-radius: 20px;
+    font-weight: 600;
+    color: white;
+  }
+  #button-div-containter{
+      position: relative;
+      height: 100px;
+  }
+  #button-div{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  footer h1{
+      text-align: center;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 40px;
+    color: #0000AE ;
+    -webkit-text-stroke-width: 0.5px;
+    -webkit-text-stroke-color: white;
+   padding-top: 15px;
+  }
