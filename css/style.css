@@ -95,9 +95,14 @@ label , legend{
     background: cornflowerblue;
 }
 li{
-    color: #FFBC00;
-    font-size: 16px;
+    color: black;
+    font-size: 15px;
+    font-weight: 700;
     text-transform: capitalize;
+    padding-bottom: 10px;
+}
+ul{
+    padding-left: 20px;
 }
 button {
 
