@@ -8,8 +8,13 @@ var rightimage = document.getElementById('right-image');
 var leftindex;
 var centerindex;
 var rightindex;
+var noleftrepeat = -1;
+var nocenterrepeat = -1;
+var norightrepeat = -1;
 var defultrounds = 25;
 var productsArray = [];
+var Clicks = [];
+var Seen = [];
 var imagesArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
 // Get rounds from user.
@@ -38,21 +43,31 @@ function Products(Name, source) {
 
 for (var i = 0; i < imagesArray.length; i++) {
     new Products(imagesArray[i], 'img/' + imagesArray[i] + '.jpg')
-} //console.log(productsArray);
-
-
+}
 
 function randomthreeimages() {           // Generate random indices Function.
     return Math.floor(Math.random() * productsArray.length);
 }
-var makesure = function () {             // Make sure they are different indices Function.
-    leftindex = randomthreeimages()
-    centerindex = randomthreeimages()
-    rightindex = randomthreeimages()
-    while (leftindex === centerindex || leftindex === rightindex || centerindex === rightindex) {
+
+var makesure = function () {
+    console.log(noleftrepeat, nocenterrepeat, norightrepeat)
+    var ForbiddenNumber = [noleftrepeat, nocenterrepeat, norightrepeat];
+    do {
+        leftindex = randomthreeimages()
+    } while (ForbiddenNumber.includes(leftindex))
+    noleftrepeat = leftindex;
+    ForbiddenNumber.push(noleftrepeat);
+
+    do {
         centerindex = randomthreeimages()
+    } while (ForbiddenNumber.includes(centerindex))
+    nocenterrepeat = centerindex;
+    ForbiddenNumber.push(nocenterrepeat);
+
+    do {
         rightindex = randomthreeimages()
-    }
+    } while (ForbiddenNumber.includes(rightindex))
+    norightrepeat = rightindex;
 }
 
 var source = function (leftindex, centerindex, rightindex) {   // Display the images Function.
@@ -64,13 +79,14 @@ var source = function (leftindex, centerindex, rightindex) {   // Display the im
 // Generate random indices.
 // Make sure they are different indices.
 // Display the three images.
+
 makesure();
 source(leftindex, centerindex, rightindex);
 
 // Listener Function when clicking on images.
 
 var clickhandler = function (event) {
-    console.log(event.target.id);
+    //console.log(event.target.id);
     if (event.target.id === 'left-image') {       // The first 3 if statements to make sure that the viewer when click ONLY on images then clicks will be increment (because the images is inside a div)
         productsArray[leftindex].TimesClicked++
     } if (event.target.id === 'center-image') {
@@ -86,9 +102,8 @@ var clickhandler = function (event) {
     productsArray[centerindex].percentage = Math.floor(productsArray[centerindex].TimesClicked / productsArray[centerindex].TimesSeen * 100)
     productsArray[rightindex].percentage = Math.floor(productsArray[rightindex].TimesClicked / productsArray[rightindex].TimesSeen * 100)
 
-    makesure();       // We Call Them Again Because We Want To Diplay Another Different 3 Images Each time.
+    makesure();
     source(leftindex, centerindex, rightindex);
-
 
     defultrounds--;
     if (defultrounds === 0) {
@@ -110,8 +125,177 @@ var ResultList = function () {
         ullist.appendChild(lilist);
         lilist.textContent = productsArray[i].Name + ' had ' + productsArray[i].TimesClicked + ' Votes , And Was Seen ' + productsArray[i].TimesSeen + ' Times ' + ' And The Percentage Is : ' + productsArray[i].percentage + ' % .';
         ResultButton.removeEventListener('click', ResultList);
+        Clicks.push(productsArray[i].TimesClicked)
+        Seen.push(productsArray[i].TimesSeen)
     }
+    Chartresult()
 }
 
 ResultButton.addEventListener('click', ResultList);
-imagesContainer.addEventListener('click', clickhandler);
+imagescontainer.addEventListener('click', clickhandler);
+
+function Chartresult() {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    
+    var chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: imagesArray,
+            datasets: [{
+                label: 'Votes',
+                backgroundColor: 'rgba(99, 132, 0, 0.6)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: Clicks
+            },
+                {
+                    label: 'Seen',
+                    backgroundColor: 'rgba(0, 99, 132, 0.6)',
+                    borderColor: 'rgb(255, 255, 255)',
+                    data: Seen
+                }
+            ]
+        },
+
+        // Configuration options go here
+        options: {}
+    });
+    var chartcolor = document.getElementById('myChart')
+    chartcolor.setAttribute("style","background :cornflowerblue ; ")
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* var ctx = document.getElementById('myChart').getContext('2d');
+ var myChart = new Chart(ctx, {
+     type: 'bar',
+     data: {
+         labels: imagesArray,
+         datasets: [{
+             label: 'Votes',
+             data: Clicks,
+             backgroundColor: [
+                 'rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+             borderColor: [
+                 'rgba(255, 99, 132, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                 'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 99, 132, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                 'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                 'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)', 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 1)'
+             ],
+             borderWidth: 1
+         }],
+         datasets: [{
+             label: 'Seen',
+             data: Seen,
+             backgroundColor: [
+                 'rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)',
+                 'rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)', 'rgba(255, 99, 132, 0.2)',
+                 'rgba(54, 162, 235, 0.2)',
+                 'rgba(255, 206, 86, 0.2)',
+                 'rgba(75, 192, 192, 0.2)',
+                 'rgba(153, 102, 255, 0.2)',
+                 'rgba(255, 159, 64, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+             borderColor: [
+                 'rgba(255, 99, 132, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                 'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)',
+                 'rgba(255, 99, 132, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                 'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)', 'rgba(255, 99, 132, 1)',
+                 'rgba(54, 162, 235, 1)',
+                 'rgba(255, 206, 86, 1)',
+                 'rgba(75, 192, 192, 1)',
+                 'rgba(153, 102, 255, 1)',
+                 'rgba(255, 159, 64, 1)', 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 1)'
+             ],
+             borderWidth: 1
+         }]
+     },
+     options: {
+         scales: {
+             yAxes: [{
+                 ticks: {
+                     beginAtZero: true
+                 }
+             }]
+         }
+     }
+ });
+*/
