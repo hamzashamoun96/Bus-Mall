@@ -17,7 +17,7 @@ var Clicks = [];
 var Seen = [];
 var TotalClicks = 0;
 var TotalAfterRefresh;
-;
+
 var imagesArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 
 // Get rounds from user.
@@ -28,8 +28,8 @@ forminput.addEventListener('submit', selectyourround);
 function selectyourround(event) {
     event.preventDefault();
     userround = parseInt(event.target.UserRounds.value) ;
-    defultrounds = userround;
-    return userround;
+    
+    return defultrounds = userround;
 }
 console.log(userround)
 // creating constructor. 
@@ -105,8 +105,8 @@ var clickhandler = function (event) {
     //The Result list will Not Work If Clicked Times were less than user Rounds.
 
     
-    if (TotalClicks < userround) {
-        console.log(TotalClicks, userround)
+    if (TotalClicks < defultrounds) {
+        console.log(TotalClicks, defultrounds)
         ResultButton.removeEventListener('click', ResultList);
         
     }else{
@@ -127,11 +127,11 @@ var clickhandler = function (event) {
     source(leftindex, centerindex, rightindex);
 
 
-    if (defultrounds === 0) {
-        imagesContainer.removeEventListener('click', clickhandler);
-    }
+   // if (defultrounds === 0) {
+     //   imagesContainer.removeEventListener('click', clickhandler);
+    //}
 
-    defultrounds--;
+    //defultrounds--;
 }
 
 
