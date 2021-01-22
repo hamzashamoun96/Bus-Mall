@@ -16,9 +16,11 @@ var productsArray = [];
 var Clicks = [];
 var Seen = [];
 var TotalClicks = 0;
-var TotalAfterRefresh;
+var TotalSeen = 0;
+var TotalVotesAfterRefresh;
+var TotalSeenAfterRefresh;
 
-var imagesArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
+var imagesArray = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass' , 'TOTAL OF VOTES'];
 
 // Get rounds from user.
 
@@ -27,11 +29,11 @@ forminput.addEventListener('submit', selectyourround);
 
 function selectyourround(event) {
     event.preventDefault();
-    userround = parseInt(event.target.UserRounds.value) ;
-    
+    userround = parseInt(event.target.UserRounds.value);
+
     return defultrounds = userround;
 }
-console.log(userround)
+
 // creating constructor. 
 
 function Products(Name, source) {
@@ -45,7 +47,7 @@ function Products(Name, source) {
 
 // Creating the products.
 
-for (var i = 0; i < imagesArray.length; i++) {
+for (var i = 0; i < imagesArray.length-1; i++) {
     new Products(imagesArray[i], 'img/' + imagesArray[i] + '.jpg')
 }
 
@@ -104,12 +106,12 @@ var clickhandler = function (event) {
 
     //The Result list will Not Work If Clicked Times were less than user Rounds.
 
-    
+
     if (TotalClicks < defultrounds) {
         console.log(TotalClicks, defultrounds)
         ResultButton.removeEventListener('click', ResultList);
-        
-    }else{
+
+    } else {
         imagesContainer.removeEventListener('click', clickhandler);
         ResultButton.addEventListener('click', ResultList);
     }
@@ -118,20 +120,12 @@ var clickhandler = function (event) {
     productsArray[centerindex].TimesSeen++
     productsArray[rightindex].TimesSeen++
 
-
     productsArray[leftindex].percentage = Math.floor(productsArray[leftindex].TimesClicked / productsArray[leftindex].TimesSeen * 100)
     productsArray[centerindex].percentage = Math.floor(productsArray[centerindex].TimesClicked / productsArray[centerindex].TimesSeen * 100)
     productsArray[rightindex].percentage = Math.floor(productsArray[rightindex].TimesClicked / productsArray[rightindex].TimesSeen * 100)
 
     makesure();
     source(leftindex, centerindex, rightindex);
-
-
-   // if (defultrounds === 0) {
-     //   imagesContainer.removeEventListener('click', clickhandler);
-    //}
-
-    //defultrounds--;
 }
 
 
@@ -141,7 +135,7 @@ var ResultList = function () {
     var listcontainter;
     var ullist;
     var lilist;
-
+    console.log(Clicks)
     listcontainter = document.getElementById('listcontainer')
     ullist = document.createElement('ul');
     listcontainter.appendChild(ullist);
@@ -154,8 +148,10 @@ var ResultList = function () {
         Seen.push(productsArray[i].TimesSeen)
     }
 
-    Chartresult()
+
     localdata()
+    Chartresult()
+    
 }
 
 imagescontainer.addEventListener('click', clickhandler);
@@ -171,6 +167,7 @@ function Chartresult() {
 
         // The data for our dataset
         data: {
+
             labels: imagesArray,
             datasets: [{
                 label: 'Votes',
@@ -197,13 +194,43 @@ function Chartresult() {
 // Storing Votes n local Storage
 
 function localdata() {
-    localStorage.setItem('Total Votes', JSON.stringify(TotalClicks))
-
-    if (JSON.parse(localStorage.getItem('Total Votes After Refresh')) === null) {
-        TotalAfterRefresh = JSON.parse(localStorage.getItem('Total Votes'))
-    } else {
-        TotalAfterRefresh = JSON.parse(localStorage.getItem('Total Votes After Refresh')) + JSON.parse((TotalClicks));
+    for (var i = 0; i < imagesArray.length-1; i++) {
+        TotalSeen += productsArray[i].TimesSeen
     }
 
-    localStorage.setItem('Total Votes After Refresh', JSON.stringify(TotalAfterRefresh))
+    for (var i = 0; i < imagesArray.length-1; i++) {
+        if (localStorage.getItem('Votes / Times Seen for ' + imagesArray[i]) === null) {
+            localStorage.setItem('Votes / Times Seen for ' + imagesArray[i], [productsArray[i].TimesClicked, productsArray[i].TimesSeen])
+
+        } else {
+            productsArray[i].TimesClicked += JSON.parse(localStorage.getItem('Votes / Times Seen for ' + imagesArray[i])[0]);
+            productsArray[i].TimesSeen += JSON.parse(localStorage.getItem('Votes / Times Seen for ' + imagesArray[i])[2]);
+
+            localStorage.setItem('Votes / Times Seen for ' + imagesArray[i], [productsArray[i].TimesClicked, productsArray[i].TimesSeen])            //localStorage.setItem('Times Seen for ' + imagesArray[i], productsArray[i].TimesSeen)
+        }
+    }
+
+
+    localStorage.setItem('Total Votes', JSON.stringify(TotalClicks))
+    localStorage.setItem('Total Seen', JSON.stringify(TotalSeen))
+
+    if (JSON.parse(localStorage.getItem('Total Votes After Refresh')) === null) {
+        TotalVotesAfterRefresh = JSON.parse(localStorage.getItem('Total Votes'))
+    } else {
+        TotalVotesAfterRefresh = JSON.parse(localStorage.getItem('Total Votes After Refresh')) + JSON.parse((TotalClicks));
+    }
+
+    if (JSON.parse(localStorage.getItem('Total Seen After Refresh')) === null) {
+        TotalSeenAfterRefresh = JSON.parse(localStorage.getItem('Total Seen'))
+    } else {
+        TotalSeenAfterRefresh = JSON.parse(localStorage.getItem('Total Seen After Refresh')) + JSON.parse((TotalSeen));
+    }
+
+
+    localStorage.setItem('Total Votes After Refresh', JSON.stringify(TotalVotesAfterRefresh))
+    localStorage.setItem('Total Seen After Refresh', JSON.stringify(TotalSeenAfterRefresh))
+
+    Clicks.push(TotalVotesAfterRefresh)
+
+    ResultButton.removeEventListener('click', ResultList);
 }
