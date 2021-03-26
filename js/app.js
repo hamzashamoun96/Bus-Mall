@@ -30,7 +30,6 @@ forminput.addEventListener('submit', selectyourround);
 function selectyourround(event) {
     event.preventDefault();
     userround = parseInt(event.target.UserRounds.value);
-
     return defultrounds = userround;
 }
 
@@ -57,22 +56,25 @@ function randomthreeimages() {           // Generate random indices Function.
 
 var makesure = function () {             // Make sure that the 3 indcies for the 3 image are differenet and not repeated in the next display. 
     var ForbiddenNumber = [noleftrepeat, nocenterrepeat, norightrepeat];
+    console.log(ForbiddenNumber)
     do {
         leftindex = randomthreeimages()
-    } while (ForbiddenNumber.includes(leftindex))
+    } while (ForbiddenNumber.includes(leftindex));
     noleftrepeat = leftindex;
     ForbiddenNumber.push(noleftrepeat);
 
     do {
         centerindex = randomthreeimages()
-    } while (ForbiddenNumber.includes(centerindex))
+    } while (ForbiddenNumber.includes(centerindex));
     nocenterrepeat = centerindex;
     ForbiddenNumber.push(nocenterrepeat);
 
     do {
         rightindex = randomthreeimages()
-    } while (ForbiddenNumber.includes(rightindex))
+    } while (ForbiddenNumber.includes(rightindex));
     norightrepeat = rightindex;
+    console.log(ForbiddenNumber)
+
 }
 
 var source = function (leftindex, centerindex, rightindex) {   // Display the images Function.
@@ -170,13 +172,13 @@ function Chartresult() {
 
             labels: imagesArray,
             datasets: [{
-                label: 'Votes',
+                label: 'VOTES',
                 backgroundColor: 'rgba(99, 132, 0, 0.6)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: Clicks
             },
             {
-                label: 'Seen',
+                label: 'SEEN',
                 backgroundColor: 'rgba(0, 99, 132, 0.6)',
                 borderColor: 'rgb(255, 255, 255)',
                 data: Seen
